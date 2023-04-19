@@ -21,7 +21,7 @@
 - Add ```ensure bcc-camp``` to your resources.cfg file!
 
 # Side Notes
-- This script is inspired by this script https://github.com/bcortezf/bc_camping but adds alot and is written from scratch
+- This script is inspired by this script https://github.com/bcortezf/bc_camping
 
 # Future Plans
 - Make prop categories and have multiple props to pick from!
