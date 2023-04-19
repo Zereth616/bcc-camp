@@ -12,5 +12,5 @@ end)
 
 --This handles the version check
 local versioner = exports['bcc-versioner'].initiate()
-local repo = '' --insert link here
+local repo = 'https://github.com/BryceCanyonCounty/bcc-camp'
 versioner.checkRelease(GetCurrentResourceName(), repo)
