@@ -16,6 +16,7 @@ client_scripts {
     'client/functions.lua',
     'client/CampSetup.lua',
     'client/MenuSetup.lua',
+    'client/dataview.lua'
 }
 
 server_scripts {

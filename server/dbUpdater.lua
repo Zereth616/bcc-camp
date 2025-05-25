@@ -15,7 +15,20 @@ CreateThread(function()
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
     ]])
 
+    -- Add the `condition` column if it doesn't exist
+    MySQL.query.await([[
+        ALTER TABLE `bcc_camp`
+        ADD COLUMN `condition` INT(11) NOT NULL DEFAULT 100
+        AFTER `tent_model`;
+    ]])
+
+    -- Add the `last_updated` column if it doesn't exist
+    MySQL.query.await([[
+        ALTER TABLE `bcc_camp`
+        ADD COLUMN `last_updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        AFTER `condition`;
+    ]])
+
     -- Print a success message to the console
     print("Database tables for \x1b[35m\x1b[1m*bcc-camp*\x1b[0m created or updated \x1b[32msuccessfully\x1b[0m.")
-
 end)

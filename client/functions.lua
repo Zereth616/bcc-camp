@@ -1,7 +1,6 @@
 ----------------------------- Essentials ------------------------------
-VORPcore = exports.vorp_core:GetCore()
+
 FeatherMenu = exports["feather-menu"].initiate()
-MiniGame = exports["bcc-minigames"].initiate()
 progressbar = exports["feather-progressbar"]:initiate()
 BccUtils = exports['bcc-utils'].initiate()
 
@@ -17,7 +16,9 @@ BCCcampMenu = FeatherMenu:RegisterMenu("bcc:camp:mainmenu",
         contentslot = {
             style = {
                 ["height"] = "450px",
-                ["min-height"] = "250px"
+                ["min-height"] = "250px",
+                ["max-height"] = "650px"
+
             }
         },
         draggable = true
@@ -79,7 +80,6 @@ end
 
 --Function used to spawn props
 function PropCorrection(obj) --Fixes the heading, and places on ground, obj = CreatedObject
-    SetEntityHeading(obj, GetEntityHeading(PlayerPedId()))
     Citizen.InvokeNative(0x9587913B9E772D29, obj, true)
 end
 --Function to check how close player is too thier tent
