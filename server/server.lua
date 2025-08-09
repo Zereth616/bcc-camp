@@ -91,18 +91,56 @@ RegisterServerEvent('bcc-camp:CampInvCreation', function(charid)
 end)
 
 -- Open the camp inventory
-RegisterServerEvent('bcc-camp:OpenInv', function()
+RegisterServerEvent('bcc-camp:OpenInv')
+AddEventHandler('bcc-camp:OpenInv', function()
     local src = source
-    devPrint("Opening inventory for source: " .. tostring(src))
+    print("[Debug] Attempting to open camp inventory for source:", src)
     local user = Core.getUser(src)
     if not user then
-        devPrint("ERROR: User not found for source: " .. tostring(src))
+        print("[Debug] User not found for source:", src)
         return
     end
+
     local Character = user.getUsedCharacter
-    exports.vorp_inventory:openInventory(src, 'Player_' .. Character.charIdentifier .. '_bcc-campinv')
-    devPrint("Opened camp inventory for charIdentifier: " ..
-                 Character.charIdentifier)
+    if not Character then
+        print("[Debug] Character data missing for source:", src)
+        return
+    end
+
+    local charIdentifier = Character.charIdentifier
+    print("[Debug] Character ID:", charIdentifier)
+
+    -- Fetch campID from database to build inventory ID
+    local result = MySQL.query.await("SELECT id FROM bcc_camp WHERE charidentifier=@charidentifier", {['charidentifier']=tostring(charIdentifier)})
+
+    if not result or not result[1] then
+        print("[Debug] No camp found for character:", charIdentifier)
+        return
+    end
+
+    local campID = result[1].id
+    local inventoryID = 'Player_' .. tostring(charIdentifier) .. '_bcc-campinv_' .. campID
+    print("[Debug] Full inventory ID:", inventoryID)
+
+    -- Register the inventory (if not registered yet)
+    print("[Debug] Registering inventory with ID:", inventoryID)
+    exports.vorp_inventory:registerInventory({
+        id = inventoryID,
+        name = _U('InventoryName'), -- or your custom string
+        limit = Config.InventoryLimit,
+        acceptWeapons = false,
+        shared = false,
+        ignoreItemStackLimit = true,
+        whitelistItems = false,
+        UsePermissions = false,
+        UseBlackList = false,
+        whitelistWeapons = false
+    })
+
+
+    -- Now open the inventory
+    print("[Debug] Opening inventory with ID:", inventoryID)
+    exports.vorp_inventory:openInventory(src, inventoryID)
 end)
 
 -- Register usable camp item (if enabled)
